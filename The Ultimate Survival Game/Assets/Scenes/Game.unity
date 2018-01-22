@@ -270,10 +270,10 @@ GameObject:
   m_Component:
   - component: {fileID: 926137532}
   - component: {fileID: 926137531}
-  - component: {fileID: 926137530}
   - component: {fileID: 926137529}
-  - component: {fileID: 926137534}
   - component: {fileID: 926137535}
+  - component: {fileID: 926137533}
+  - component: {fileID: 926137534}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -313,19 +313,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &926137530
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 926137528}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &926137531
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -347,6 +334,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &926137533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 926137528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e13355b6134abe42b06f08729b29f54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerState: 0
 --- !u!114 &926137534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,8 +360,10 @@ MonoBehaviour:
   playerCamera: {fileID: 1850734592}
   mouseRotationSpeedX: 185
   mouseRotationSpeedY: 175
-  horizontalMoveSpeed: 125
-  verticalMoveSpeed: 125
+  walkSpeed: 125
+  sprintSpeed: 300
+  strafeSpeed: 125
+  strafeSprintSpeed: 150
 --- !u!143 &926137535
 CharacterController:
   m_ObjectHideFlags: 0

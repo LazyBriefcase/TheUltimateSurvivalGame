@@ -7,20 +7,23 @@ public class PlayerMovement : MonoBehaviour
     public Camera playerCamera;
     public float mouseRotationSpeedX;
     public float mouseRotationSpeedY;
-    public float horizontalMoveSpeed;
-    public float verticalMoveSpeed;
+    public float walkSpeed;
+    public float sprintSpeed;
 
+    private Player playerScript;
     private CharacterController playerController;
     private float verticalRotation;
+    private float currentMoveSpeed;
 
 	// Use this for initialization
 	void Start ()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         
         playerController = GetComponent<CharacterController>();
-	}
+        playerScript = GetComponent<Player>();
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -50,13 +53,25 @@ public class PlayerMovement : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
         }
     }
-
-    void PlayerMove()
+    
+    public void PlayerMove()
     {
-        Vector3 playerMoveForwardBackward = transform.forward * Input.GetAxis("Vertical") * verticalMoveSpeed * Time.deltaTime;
-        Vector3 playerMoveLeftRight = transform.right * Input.GetAxis("Horizontal") * horizontalMoveSpeed * Time.deltaTime;
+        Vector3 playerMoveLeftRight = transform.right * Input.GetAxis("Horizontal") * currentMoveSpeed * Time.deltaTime;
+        Vector3 playerMoveForwardBackward = transform.forward * Input.GetAxis("Vertical") * currentMoveSpeed * Time.deltaTime;
 
-        playerController.SimpleMove(playerMoveForwardBackward);
         playerController.SimpleMove(playerMoveLeftRight);
+        playerController.SimpleMove(playerMoveForwardBackward);
+
+        //Walk
+        if (playerScript.playerState == PlayerState.Walking)
+        {
+            currentMoveSpeed = walkSpeed;
+        }
+
+        //Sprint
+        if (playerScript.playerState == PlayerState.Sprinting)
+        {
+            currentMoveSpeed = sprintSpeed;
+        }
     }
 }
