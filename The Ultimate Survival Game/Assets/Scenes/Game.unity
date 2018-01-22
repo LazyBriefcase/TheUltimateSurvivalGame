@@ -361,9 +361,7 @@ MonoBehaviour:
   mouseRotationSpeedX: 185
   mouseRotationSpeedY: 175
   walkSpeed: 125
-  sprintSpeed: 300
-  strafeSpeed: 125
-  strafeSprintSpeed: 150
+  sprintSpeed: 225
 --- !u!143 &926137535
 CharacterController:
   m_ObjectHideFlags: 0
