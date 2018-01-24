@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
                 playerState = PlayerState.CrouchedIdle;
             }
         }
-        if (playerState == PlayerState.Walking)
+        else if (playerState == PlayerState.Walking)
         {
             if (Input.GetAxis("Vertical") > 0 && Input.GetButtonDown("Sprint"))
             {
@@ -49,8 +49,12 @@ public class Player : MonoBehaviour
             {
                 playerState = PlayerState.Idle;
             }
+            if(Input.GetButtonDown("Crouch"))
+            {
+                playerState = PlayerState.CrouchedWalking;
+            }
         }
-        if (playerState == PlayerState.Sprinting)
+        else if (playerState == PlayerState.Sprinting)
         {
             if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
             {
@@ -60,8 +64,12 @@ public class Player : MonoBehaviour
             {
                 playerState = PlayerState.Walking;
             }
+            if(Input.GetButtonDown("Crouch"))
+            {
+                playerState = PlayerState.CrouchedWalking;
+            }
         }
-        if(playerState == PlayerState.CrouchedIdle)
+        else if(playerState == PlayerState.CrouchedIdle)
         {
             if (Input.GetAxis("Horizontal") > 0 || Input.GetAxis("Horizontal") < 0 ||
                 Input.GetAxis("Vertical") > 0 || Input.GetAxis("Vertical") < 0)
@@ -77,7 +85,7 @@ public class Player : MonoBehaviour
                 playerState = PlayerState.Sprinting;
             }
         }
-        if(playerState == PlayerState.CrouchedWalking)
+        else if(playerState == PlayerState.CrouchedWalking)
         {
             if(Input.GetButtonDown("Crouch"))
             {
