@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerState { Idle, Walking, Sprinting };
+public enum PlayerState { Idle, Walking, Sprinting, CrouchedIdle, CrouchedWalking };
 
 public class Player : MonoBehaviour
 {
@@ -34,6 +34,10 @@ public class Player : MonoBehaviour
             {
                 playerState = PlayerState.Sprinting;
             }
+            if(Input.GetButtonDown("Crouch"))
+            {
+                playerState = PlayerState.CrouchedIdle;
+            }
         }
         if (playerState == PlayerState.Walking)
         {
@@ -55,6 +59,37 @@ public class Player : MonoBehaviour
             if(!Input.GetButton("Sprint") || Input.GetAxis("Horizontal") > 0 || Input.GetAxis("Horizontal") < 0)
             {
                 playerState = PlayerState.Walking;
+            }
+        }
+        if(playerState == PlayerState.CrouchedIdle)
+        {
+            if (Input.GetAxis("Horizontal") > 0 || Input.GetAxis("Horizontal") < 0 ||
+                Input.GetAxis("Vertical") > 0 || Input.GetAxis("Vertical") < 0)
+            {
+                playerState = PlayerState.CrouchedWalking;
+            }
+            if(Input.GetButtonDown("Crouch"))
+            {
+                playerState = PlayerState.Idle;
+            }
+            if(Input.GetAxis("Vertical") > 0 && Input.GetButtonDown("Sprint"))
+            {
+                playerState = PlayerState.Sprinting;
+            }
+        }
+        if(playerState == PlayerState.CrouchedWalking)
+        {
+            if(Input.GetButtonDown("Crouch"))
+            {
+                playerState = PlayerState.Walking;
+            }
+            if (Input.GetAxis("Vertical") > 0 && Input.GetButtonDown("Sprint"))
+            {
+                playerState = PlayerState.Sprinting;
+            }
+            if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+            {
+                playerState = PlayerState.CrouchedIdle;
             }
         }
     }

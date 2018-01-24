@@ -9,14 +9,18 @@ public class PlayerMovement : MonoBehaviour
     public float mouseRotationSpeedY;
     public float walkSpeed;
     public float sprintSpeed;
+    public float crouchedWalkSpeed;
 
     private Player playerScript;
     private CharacterController playerController;
     private float verticalRotation;
     private float currentMoveSpeed;
+    private bool hasSetWalkSpeed = false;
+    private bool hasSetSprintSpeed = false;
+    private bool isCrouched = false;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -29,11 +33,12 @@ public class PlayerMovement : MonoBehaviour
 	void Update ()
     {
         PlayerLookAround();
-	}
+        ControlPlayer();
+    }
 
     private void FixedUpdate()
     {
-        PlayerMove();
+        MovePlayer();
     }
 
     void PlayerLookAround()
@@ -54,24 +59,64 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     
-    public void PlayerMove()
+    public void MovePlayer()
     {
         Vector3 playerMoveLeftRight = transform.right * Input.GetAxis("Horizontal") * currentMoveSpeed * Time.deltaTime;
         Vector3 playerMoveForwardBackward = transform.forward * Input.GetAxis("Vertical") * currentMoveSpeed * Time.deltaTime;
 
         playerController.SimpleMove(playerMoveLeftRight);
         playerController.SimpleMove(playerMoveForwardBackward);
+    }
 
+    void ControlPlayer()
+    {
         //Walk
         if (playerScript.playerState == PlayerState.Walking)
         {
-            currentMoveSpeed = walkSpeed;
+            if(hasSetWalkSpeed == false)
+            {
+                currentMoveSpeed = walkSpeed;
+                hasSetWalkSpeed = true;
+            }
+        }
+        else if(playerScript.playerState != PlayerState.Walking && hasSetWalkSpeed == true)
+        {
+            hasSetWalkSpeed = false;
         }
 
         //Sprint
         if (playerScript.playerState == PlayerState.Sprinting)
         {
-            currentMoveSpeed = sprintSpeed;
+            if (hasSetSprintSpeed == false)
+            {
+                currentMoveSpeed = sprintSpeed;
+                hasSetSprintSpeed = true;
+            }
+        }
+        else if (playerScript.playerState != PlayerState.Sprinting && hasSetSprintSpeed == true)
+        {
+            hasSetSprintSpeed = false;
+        }
+
+        //Crouch
+        if (playerScript.playerState == PlayerState.CrouchedIdle || playerScript.playerState == PlayerState.CrouchedWalking)
+        {
+            if (isCrouched == false)
+            {
+                transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 0.5f, transform.localScale.z);
+                currentMoveSpeed = crouchedWalkSpeed;
+                isCrouched = true;
+            }
+        }
+
+        //Stand
+        if (playerScript.playerState != PlayerState.CrouchedIdle && playerScript.playerState != PlayerState.CrouchedWalking)
+        {
+            if (isCrouched == true)
+            {
+                transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2f, transform.localScale.z);
+                isCrouched = false;
+            }
         }
     }
 }
